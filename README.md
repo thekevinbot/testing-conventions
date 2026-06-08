@@ -1,40 +1,55 @@
 # testing-conventions
 
-**Enforce testing conventions in CI — across languages, from one config.**
+**Enforce testing conventions in libraries (Python, Typescript, and Rust)**
 
 `testing-conventions` is an opinionated, config-driven standard that enforces
-*where tests live, what counts as a unit test, and whether your coverage number
-is telling the truth.* You adopt it the way you adopt a formatter or a linter:
-**"this repo follows these conventions,"** checked in CI.
+how tests are expected to function in a library. It promotes the following:
 
-> Coverage measures **execution, not assertion.** A "unit coverage" gate can be
-> fully satisfied by *integration* tests whenever the unit/integration boundary
-> is unreliable — so the number reads 100% while no real unit tests exist.
+- Where tests live
+- How tests are written
+- The line between unit and integration tests
+- Coverage floors
 
-> [!NOTE]
-> **Status: early development.** These conventions are battle-tested in
-> production (see [Why this exists](#why-this-exists)), but the standalone,
-> cross-language tool is still being built. This README describes the design and
-> the rule set it enforces. Expect things to move.
+It works with Python, Typescript, and Rust.
 
-## Why this exists
+## Where Tests Live
 
-The problem is concrete. In one project, a "100% unit coverage" gate stayed
-green while the codebase had **no real unit tests at all**:
+### Python
 
-- The gate counted *any* test not marked `@pytest.mark.integration` as "unit."
-- Every test actually lived in the integration directory.
-- A feature shipped with only integration tests — and the gate happily reported
-  "100% unit coverage."
+#### Unit Tests
+Unit tests should be colocated with Python src code and appended with `_test.py`. E.g.:
 
-The number lied, because the unit/integration boundary was defined by a marker
-that nothing enforced.
+```
+- foo.py
+- foo_test.py
+```
 
-The fix that worked: make the boundary **structural** (defined by *where a test
-lives*, not a tag), measure coverage **only on real unit tests**, and **guard
-the whole thing in CI** so it can't silently regress. `testing-conventions`
-generalizes that fix so any repo, in any language, gets it from one standard
-instead of hand-rolled CI scripts.
+#### Integration Tests
+Integration tests should live in tests/integration and end in `_test.py`. Non-test helper code can live alongside the integration tests, but omit the suffix.
+
+#### E2E Tests
+E2E tests should live in tests/e2e and end in `_test.py`. Non-test helper code can live alongside the integration tests, but omit the suffix.
+
+### Typescript
+
+#### Unit Tests
+Unit tests should be colocated with Typescript src code and appended with `.test.ts`. E.g.:
+
+```
+- foo-bar.ts
+- foo-bar.test.ts
+```
+
+#### Integration Tests
+Integration tests should live in tests/integration and end in `.test.ts`. Non-test helper code can live alongside the integration tests, but omit the suffix.
+
+#### E2E Tests
+E2E tests should live in tests/e2e and end in `test.ts`. Non-test helper code can live alongside the integration tests, but omit the suffix.
+
+
+## How tests are written
+
+### Python
 
 ## What it enforces
 
@@ -95,16 +110,6 @@ reminds**, but never fails CI on them:
 
 These are kept separate from the hard gates on purpose. Conflating "we checked
 this" with "we suggest this" is how trust in a gate erodes.
-
-## What's deliberately out of scope
-
-Keeping the label honest — `testing-conventions` is about *testing enforcement,
-exclusively.* It does **not** do:
-
-- **Release-docs gates** — changelog / docs / migration enforcement. A different
-  concern (release, not testing).
-- **Code style** — import conventions, formatting. That's your linter's job.
-- **Unenforceable process** — the nudges above are scaffolded, not gated.
 
 ## How it works
 
