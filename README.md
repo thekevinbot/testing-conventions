@@ -28,6 +28,18 @@ Integration tests should live in tests/integration and end in `_test.py`. Non-te
 #### E2E Tests
 E2E tests should live in tests/e2e and end in `_test.py`. Non-test helper code can live alongside the integration tests, but omit the suffix.
 
+#### Doc Tests
+Doctests are runnable examples in docstrings, written in the interactive `>>>` style and run with `pytest --doctest-modules` (stdlib `doctest`). They keep documented examples honest. E.g.:
+
+```python
+def add(a: int, b: int) -> int:
+    """
+    >>> add(2, 2)
+    4
+    """
+    return a + b
+```
+
 ### Typescript
 
 #### Unit Tests
@@ -43,6 +55,21 @@ Integration tests should live in tests/integration and end in `.test.ts`. Non-te
 
 #### E2E Tests
 E2E tests should live in tests/e2e and end in `test.ts`. Non-test helper code can live alongside the integration tests, but omit the suffix.
+
+#### Doc Tests
+Doctests are runnable examples in JSDoc `@example` comments (and Markdown), run as part of `vitest` via [`vite-plugin-doctest`](https://github.com/ssssota/doc-vitest). Mark the example fence with `@import.meta.vitest` and assert with `expect()`. E.g.:
+
+````ts
+/**
+ * @example
+ * ```ts @import.meta.vitest
+ * expect(add(1, 2)).toBe(3);
+ * ```
+ */
+export function add(a: number, b: number) {
+  return a + b;
+}
+````
 
 ### Rust
 
@@ -71,6 +98,20 @@ Integration tests live in the top-level `tests/` directory (a sibling of `src/`)
 
 #### E2E Tests
 E2E tests also live under `tests/`, driving the built binary (e.g. via `CARGO_BIN_EXE_<name>` or `assert_cmd`). Keep them in their own file(s), such as `tests/e2e.rs`, to separate them from the API-level integration suite.
+
+#### Doc Tests
+Doctests are runnable examples in `///` doc comments, compiled and run natively by `cargo test` (reported under "Doc-tests"). They exercise the public API and render into rustdoc. E.g.:
+
+````rust
+/// Adds two numbers.
+///
+/// ```
+/// assert_eq!(mycrate::add(2, 2), 4);
+/// ```
+pub fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+````
 
 
 ## How tests are written
