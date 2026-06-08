@@ -10,8 +10,6 @@ how tests are expected to function in a library. It promotes the following:
 - The line between unit and integration tests
 - Coverage floors
 
-It works with Python, Typescript, and Rust.
-
 ## Where Tests Live
 
 ### Python
