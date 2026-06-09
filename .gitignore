@@ -1,0 +1,25 @@
+target/
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+pnpm-lock.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
+
+# Beads issue tracker (local only)
+.beads/
+AGENTS.md
+docs/.vitepress/cache
+docs/.vitepress/dist
+docs/node_modules/
