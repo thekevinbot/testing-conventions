@@ -23,7 +23,7 @@ name: Bootstrap npm packages (one-shot)
 #   5. Re-trigger Release; the engine publishes real versions over the
 #      bootstrap stubs via OIDC.
 #
-# This file can be removed once all testing-conventions-cli + @testing-conventions/*
+# This file can be removed once all testing-conventions + @testing-conventions/*
 # npm names exist on the registry — its only job is the first-publish
 # bootstrap.
 

@@ -8,7 +8,7 @@ version = 1
 [[package]]
 name = "testing-conventions-rust"
 kind = "crates"
-crate = "testing-conventions-cli"
+crate = "testing-conventions"
 path = "packages/rust"
 first_version = "0.0.1"
 globs = [
@@ -40,7 +40,7 @@ targets = [
 [[package]]
 name = "testing-conventions-npm"
 kind = "npm"
-npm = "testing-conventions-cli"
+npm = "testing-conventions"
 path = "packages/node"
 first_version = "0.0.1"
 build = [{ mode = "bundled-cli", name = "@testing-conventions/{triple}" }]
