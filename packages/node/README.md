@@ -1,5 +1,5 @@
-# testing-conventions-cli (Node)
+# testing-conventions (Node)
 
 ```
-npm install testing-conventions-cli
+npm install testing-conventions
 ```

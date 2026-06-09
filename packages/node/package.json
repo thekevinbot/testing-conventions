@@ -1,5 +1,5 @@
 {
-  "name": "testing-conventions-cli",
+  "name": "testing-conventions",
   "version": "0.0.1",
   "description": "Enforce testing conventions in libraries (Python, TypeScript, and Rust).",
   "license": "MIT",
