@@ -1,0 +1,5 @@
+# Red fixture: syntactically valid TOML, but `wibble` is not a known config
+# key. The loader's self-guard must reject it rather than silently ignore it.
+[rules]
+unit.isolation = "error"
+wibble = "nope"

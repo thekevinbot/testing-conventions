@@ -1,0 +1,4 @@
+# Red fixture: not valid TOML (unterminated table header, dangling value).
+# The loader must surface the parse error, not swallow it.
+[python
+unit.glob =
