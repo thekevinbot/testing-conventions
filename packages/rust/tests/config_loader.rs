@@ -103,3 +103,12 @@ fn rejects_malformed_toml() {
         "malformed TOML must be rejected, got: {result:?}"
     );
 }
+
+#[test]
+fn errors_on_a_missing_file() {
+    let result = load_config(fixture("does_not_exist.toml"));
+    assert!(
+        result.is_err(),
+        "a missing config file must be an error, got: {result:?}"
+    );
+}

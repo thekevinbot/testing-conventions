@@ -1,5 +1,16 @@
-# Red fixture: syntactically valid TOML, but `wibble` is not a known config
-# key. The loader's self-guard must reject it rather than silently ignore it.
+# Red fixture: an otherwise-valid config with one key the schema doesn't know
+# (`unknown_rule`). The loader's self-guard (serde `deny_unknown_fields`) must
+# reject it rather than silently ignore it. Keeping the rest of the config valid
+# means this fixture fails *only* because of the unknown key.
+[python]
+unit.glob = "src/**/*_test.py"
+integration.dir = "tests/integration"
+e2e.dir = "tests/e2e"
+coverage = { branch = true, fail_under = 100 }
+
 [rules]
 unit.isolation = "error"
-wibble = "nope"
+integration.external = "all"
+integration.whitelist = ["lodash", "chrono"]
+coverage.floor = "no-regress"
+unknown_rule = "boom"
