@@ -8,9 +8,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - `config` module — `load_config()` parses one TOML config file into the new
-  in-memory `Config` schema (the `[python]` / `[typescript]` / `[rust]` /
-  `[rules]` tables from the README) and self-validates on load: unknown keys
-  and malformed TOML are rejected. The parsed config is not consumed yet. (#12)
+  in-memory `Config` schema (per-language `coverage` thresholds under the
+  `[python]` / `[typescript]` / `[rust]` tables) and self-validates on load:
+  unknown keys and malformed TOML are rejected. The parsed config is not
+  consumed yet. (#12)
 
 ### Changed
 

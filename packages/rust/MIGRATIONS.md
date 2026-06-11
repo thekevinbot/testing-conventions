@@ -15,11 +15,11 @@ Each entry has five sections, in order:
 
 ### Summary
 
-Adds the `config` module: a `Config` schema mirroring the README's configuration
-tables, plus `load_config()`, which reads one TOML file into it and validates
-the config itself (the self-guard) — unknown keys and malformed TOML are
-rejected rather than silently accepted. Purely additive; nothing consumes the
-parsed config yet.
+Adds the `config` module: a `Config` schema holding the per-language `coverage`
+thresholds (`[python]` / `[typescript]` / `[rust]`), plus `load_config()`, which
+reads one TOML file into it and validates the config itself (the self-guard) —
+unknown keys and malformed TOML are rejected rather than silently accepted.
+Purely additive; nothing consumes the parsed config yet.
 
 ### Required changes
 
