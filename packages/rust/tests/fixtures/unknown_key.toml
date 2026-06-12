@@ -1,0 +1,6 @@
+# Red fixture: a valid coverage config plus one key the schema doesn't know
+# (`unknown`). The loader's self-guard (serde `deny_unknown_fields`) must reject
+# it — keeping the rest valid means this fixture fails *only* on the bad key.
+[python]
+coverage = { branch = true, fail_under = 100 }
+unknown = true
