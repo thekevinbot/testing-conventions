@@ -4,7 +4,8 @@
 //! a Python source file `foo.py` is unit-tested by a colocated `foo_test.py`.
 //! [`missing_unit_tests`] walks a directory tree and returns every source file
 //! that has no such sibling — an "orphan". Files that are themselves tests
-//! (`*_test.py`) are what the check looks *for*, never subjects.
+//! (`*_test.py`) are what the check looks *for*, never subjects, and package
+//! plumbing (`__init__.py`, `conftest.py`) is exempt.
 
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
@@ -15,6 +16,8 @@ use anyhow::{Context, Result};
 const PY_EXTENSION: &str = "py";
 /// The stem suffix that marks a file as a unit test: `foo` → `foo_test`.
 const TEST_STEM_SUFFIX: &str = "_test";
+/// Files that are never unit-test subjects: the package marker and pytest config.
+const EXEMPT_FILENAMES: [&str; 2] = ["__init__.py", "conftest.py"];
 
 /// Walk `root` recursively and return every Python source file that has no
 /// colocated `<stem>_test.py`, sorted for deterministic output.
@@ -32,7 +35,7 @@ pub fn missing_unit_tests(root: impl AsRef<Path>) -> Result<Vec<PathBuf>> {
 
     let mut orphans: Vec<PathBuf> = Vec::new();
     for source in &python_files {
-        if is_test_file(source) {
+        if is_test_file(source) || is_exempt(source) {
             continue;
         }
         if !present.contains(expected_test_path(source).as_path()) {
@@ -68,6 +71,13 @@ fn is_python_source(path: &Path) -> bool {
 /// `true` when `path` is itself a unit test (`*_test.py`), never a subject.
 fn is_test_file(path: &Path) -> bool {
     stem_of(path).ends_with(TEST_STEM_SUFFIX)
+}
+
+/// `true` for package/pytest plumbing that never needs a colocated test.
+fn is_exempt(path: &Path) -> bool {
+    path.file_name()
+        .and_then(|name| name.to_str())
+        .is_some_and(|name| EXEMPT_FILENAMES.contains(&name))
 }
 
 /// The colocated test a source is expected to have: `foo.py` → `foo_test.py`.
@@ -106,6 +116,14 @@ mod tests {
         assert!(is_test_file(Path::new("pkg/helper_test.py")));
         assert!(!is_test_file(Path::new("widget.py")));
         assert!(!is_test_file(Path::new("pkg/helper.py")));
+    }
+
+    #[test]
+    fn exempts_package_and_pytest_plumbing() {
+        assert!(is_exempt(Path::new("__init__.py")));
+        assert!(is_exempt(Path::new("pkg/conftest.py")));
+        assert!(!is_exempt(Path::new("widget.py")));
+        assert!(!is_exempt(Path::new("pkg/helper.py")));
     }
 
     #[test]
